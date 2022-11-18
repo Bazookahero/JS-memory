@@ -98,7 +98,7 @@ function pickCard(y) {
     element.style.background = cardList[y].color;
 
     pickCount++;
-    console.log("pc precis innan: ", pickCount)
+    /*console.log("pc precis innan: ", pickCount)*/
     if (pickCount == 2) {
         window.sessionStorage.removeItem("prevCard");
         evaluatePicks(prevCard, chosenCard);
@@ -114,8 +114,10 @@ function pickCard(y) {
 async function evaluatePicks(pick1, pick2) {
     //console.log("du kom in!");
     if (pick1.color === pick2.color) {
+        /*checkWinner();*/
         //console.log("jämför ", pick1.color, pick2.color)
         alert("Grattis!");
+        
     }
     else {
         await new Promise(r => setTimeout(r, 1000));
@@ -126,7 +128,17 @@ async function evaluatePicks(pick1, pick2) {
         element2.style.background = '';
     }
 }
-
+//function checkWinner() {
+//    let buttons = Array.from(document.querySelectorAll('.card'));
+//    console.log(buttons)
+//    buttons.forEach((button) => { 
+//        console.log(button)
+//    if (button.contains('aquamarine')) {
+//        alert('du vann!')
+//        return
+//        }
+//    })
+//}
 class card {
     constructor(id, color) {
         this.id = id;
