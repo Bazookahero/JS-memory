@@ -1,61 +1,5 @@
 ﻿
-//function StartUp() {
-//    document.body.innerHTML = '';
-//    for (var x = 1; x < 4; x++) {
-//        if (x == 1) {
-//            for (var y = 1; y < 5; y++) {
-//                var newBtn = document.body.appendChild(document.createElement('button'));
-//                newBtn.style.height = 150 + "px";
-//                newBtn.style.width = 150 + "px";
-//                newBtn.type = "submit";
-//                newBtn.id = "btn" + y;
-//                newBtn.value = y;
-//                newBtn.className = "btn"
-//                newBtn.style.backgroundColor = 'salmon'
-//                newBtn.style.margin = 2 + "px";
-//                newBtn.onclick = 'pickCard(' + y + ')';
-//            }
-//            var lineBreak = document.createElement("br");
-//            document.body.appendChild(lineBreak);
-//        }
-//        if (x == 2) {
-//            for (var y = 5; y < 9; y++) {
-//                var newBtn = document.body.appendChild(document.createElement('button'));
-//                newBtn.style.height = 150 + "px";
-//                newBtn.style.width = 150 + "px";
-//                newBtn.type = "submit";
-//                newBtn.id = "btn" + y;
-//                newBtn.value = y;
-//                newBtn.className = "btn"
-//                newBtn.style.backgroundColor = 'salmon'
-//                newBtn.style.margin = 2 + "px";
-//                newBtn.onclick = 'pickCard(' + y + ')';
-//            }
-//            var lineBreak = document.createElement("br");
-//            document.body.appendChild(lineBreak);
-//        }
-//        if (x == 3) {
-//            for (var y = 9; y < 13; y++) {
-//                var newBtn = document.body.appendChild(document.createElement('button'));
-//                newBtn.style.height = 150 + "px";
-//                newBtn.style.width = 150 + "px";
-//                newBtn.type = "submit";
-//                newBtn.id = "btn" + y;
-//                newBtn.value = y;
-//                newBtn.className = "btn"
-//                newBtn.style.backgroundColor = 'salmon'
-//                newBtn.style.margin = 2 + "px";
-//                newBtn.onclick = 'pickCard(' + y + ')';
-//            }
-//            var lineBreak = document.createElement("br");
-//            document.body.appendChild(lineBreak);
-//        }
-//    }
-//    var newBtn = document.body.appendChild(document.createElement('button'))
-//    newBtn.onclick = 'initializeCards()'
-//    newBtn.innerHTML = 'Start';
-//}
-//StartUp();
+
 const giveRandom = (array) => {
     if (array.length) {
         const random = Math.floor(Math.random() * array.length);
@@ -63,6 +7,76 @@ const giveRandom = (array) => {
         return el;
     }
 };
+
+class card {
+    constructor(id, color) {
+        this.id = id;
+        this.color = color;
+    }
+}
+
+function StartUp() {
+    document.body.innerHTML = '';
+    window.sessionStorage.clear;
+    for (var x = 1; x < 4; x++) {
+        if (x == 1) {
+            for (var y = 1; y < 5; y++) {
+                var newBtn = document.body.appendChild(document.createElement('button'));
+                newBtn.style.height = 150 + "px";
+                newBtn.style.width = 100 + "px";
+                newBtn.type = "submit";
+                newBtn.id = "btn" + y;
+                newBtn.value = y;
+                newBtn.className = "btn"
+                newBtn.style.backgroundColor = 'salmon'
+                newBtn.style.margin = 2 + "px";
+                newBtn.setAttribute("onclick", "pickCard("+y+')')
+            }
+            var lineBreak = document.createElement("br");
+            document.body.appendChild(lineBreak);
+        }
+        if (x == 2) {
+            for (var y = 5; y < 9; y++) {
+                var newBtn = document.body.appendChild(document.createElement('button'));
+                newBtn.style.height = 150 + "px";
+                newBtn.style.width = 100 + "px";
+                newBtn.type = "submit";
+                newBtn.id = "btn" + y;
+                newBtn.value = y;
+                newBtn.className = "btn"
+                newBtn.style.backgroundColor = 'salmon'
+                newBtn.style.margin = 2 + "px";
+                newBtn.setAttribute("onclick", "pickCard(" + y + ')')
+            }
+            var lineBreak = document.createElement("br");
+            document.body.appendChild(lineBreak);
+        }
+        if (x == 3) {
+            for (var y = 9; y < 13; y++) {
+                var newBtn = document.body.appendChild(document.createElement('button'));
+                newBtn.style.height = 150 + "px";
+                newBtn.style.width = 100 + "px";
+                newBtn.type = "submit";
+                newBtn.id = "btn" + y;
+                newBtn.value = y;
+                newBtn.className = "btn"
+                newBtn.style.backgroundColor = 'salmon'
+                newBtn.style.margin = 2 + "px";
+                newBtn.setAttribute("onclick", "pickCard(" + y + ')')
+            }
+            //var lineBreak = document.createElement("br");
+            //document.body.appendChild(lineBreak);
+        }
+    }
+    var newBtn = document.body.appendChild(document.createElement('button'))
+    newBtn.setAttribute("onclick", "reload()")
+    newBtn.innerHTML = 'Reload';
+    initiateCards()
+}
+StartUp();
+
+
+
 function initiateCards() {
     window.sessionStorage.clear;
     let cardList = [];
@@ -89,13 +103,14 @@ console.log(cardList)
 
 
 function pickCard(y) {
+    /*console.log('jag är inne!')*/
     let pickCount = window.sessionStorage.getItem("pickCount") || 0;
     let cardList = JSON.parse(window.sessionStorage.getItem("cardlist"))
     let prevCard = JSON.parse(window.sessionStorage.getItem("prevCard")) || null;
-    let chosenCard = cardList[y];
+    let chosenCard = cardList[y-1];
 
-    let element = document.getElementById(y)
-    element.style.background = cardList[y].color;
+    let element = document.getElementById('btn'+y)
+    element.style.background = cardList[y-1].color;
 
     pickCount++;
     /*console.log("pc precis innan: ", pickCount)*/
@@ -114,34 +129,41 @@ function pickCard(y) {
 async function evaluatePicks(pick1, pick2) {
     //console.log("du kom in!");
     if (pick1.color === pick2.color) {
-        /*checkWinner();*/
+        await new Promise(r => setTimeout(r, 100));
+        checkWinner();
         //console.log("jämför ", pick1.color, pick2.color)
         alert("Grattis!");
         
     }
     else {
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 100));
         alert('tyvärr');
-        let element1 = document.getElementById(pick1.id -1)
-        element1.style.background = '';
-        let element2 = document.getElementById(pick2.id-1)
-        element2.style.background = '';
+        let element1 = document.getElementById('btn'+pick1.id)
+        element1.style.background = 'salmon';
+        let element2 = document.getElementById('btn' + pick2.id)
+        element2.style.background = 'salmon';
     }
 }
-//function checkWinner() {
-//    let buttons = Array.from(document.querySelectorAll('.card'));
-//    console.log(buttons)
-//    buttons.forEach((button) => { 
-//        console.log(button)
-//    if (button.contains('aquamarine')) {
-//        alert('du vann!')
-//        return
-//        }
-//    })
-//}
-class card {
-    constructor(id, color) {
-        this.id = id;
-        this.color = color;
+function checkWinner() {
+    let checkWinner = true;
+    let buttons = Array.from(document.querySelectorAll('.btn'));
+    console.log(buttons)
+    buttons.forEach((button) => { 
+        console.log(button)
+        if (button.style.backgroundColor == 'salmon') {
+            checkWinner = false
+        }
+    })
+    if (checkWinner) {
+        alert('du vann!')
     }
+}
+function reload() {
+    let buttons = Array.from(document.querySelectorAll('.btn'));
+    console.log(buttons)
+    buttons.forEach((button) => {
+        console.log(button)
+        button.style.backgroundColor = 'salmon'
+    });
+    initiateCards();
 }
